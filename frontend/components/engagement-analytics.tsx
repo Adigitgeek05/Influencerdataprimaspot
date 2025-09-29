@@ -7,7 +7,11 @@ import { useInfluencerData } from "@/lib/data-context"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts"
 
 export function EngagementAnalytics() {
-  const data = useInfluencerData()
+  const { data } = useInfluencerData()
+
+  if (!data) {
+    return null
+  }
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`
@@ -24,10 +28,9 @@ export function EngagementAnalytics() {
 
   const totalLikes = data.recent_posts.reduce((sum, post) => sum + post.likes, 0)
   const totalComments = data.recent_posts.reduce((sum, post) => sum + post.comments, 0)
-  // Use more visible colors for the engagement distribution chart
   const engagementDistribution = [
-    { name: "Likes", value: totalLikes, color: "#0070f3" }, // bright blue
-    { name: "Comments", value: totalComments, color: "#F97316" }, // orange
+    { name: "Likes", value: totalLikes, color: "rgb(var(--chart-1))" },
+    { name: "Comments", value: totalComments, color: "rgb(var(--chart-2))" },
   ]
 
   return (
@@ -118,8 +121,7 @@ export function EngagementAnalytics() {
                   }}
                   formatter={(value: number) => formatNumber(value)}
                 />
-                <Bar dataKey="likes" fill="#2fb29e4f" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="comments" fill="#F97316" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="likes" fill="rgb(var(--chart-1))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

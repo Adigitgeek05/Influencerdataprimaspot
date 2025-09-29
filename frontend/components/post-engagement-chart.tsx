@@ -6,7 +6,11 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { useInfluencerData } from "@/lib/data-context"
 
 export function PostEngagementChart() {
-  const data = useInfluencerData()
+  const { data } = useInfluencerData()
+
+  if (!data) {
+    return null
+  }
 
   // Transform posts data for the chart
   const chartData = data.recent_posts.map((post, index) => ({

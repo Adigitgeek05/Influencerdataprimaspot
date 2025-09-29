@@ -8,7 +8,11 @@ import { Instagram, ExternalLink, TrendingUp } from "lucide-react"
 import { useInfluencerData } from "@/lib/data-context"
 
 export function ProfileHeader() {
-  const data = useInfluencerData()
+  const { data } = useInfluencerData()
+
+  if (!data) {
+    return null
+  }
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) {
@@ -31,9 +35,11 @@ export function ProfileHeader() {
                 <AvatarImage src={data.profile_picture || "/placeholder.svg"} alt={data.name} />
                 <AvatarFallback className="text-2xl font-semibold bg-primary/10 text-primary">
                   {data.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
+                    ? data.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                    : "?"}
                 </AvatarFallback>
               </Avatar>
               <div className="absolute -bottom-2 -right-2 bg-chart-1 rounded-full p-2">

@@ -8,8 +8,12 @@ import { useState } from "react"
 import { useInfluencerData } from "@/lib/data-context"
 
 export function PostsGrid() {
-  const data = useInfluencerData()
-  const [selectedPost, setSelectedPost] = useState<(typeof data.recent_posts)[0] | null>(null)
+  const { data } = useInfluencerData()
+  const [selectedPost, setSelectedPost] = useState<any | null>(null)
+
+  if (!data || !data.recent_posts) {
+    return null
+  }
 
   const formatNumber = (num: number) => {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`

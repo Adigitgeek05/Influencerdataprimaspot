@@ -1,9 +1,8 @@
 "use client"
 
-import { createContext, useContext, type ReactNode } from "react"
+import { createContext, useContext, useState, type ReactNode } from "react"
 import type { InfluencerData } from "./types"
 
-// Sample data matching your backend structure
 const sampleData: InfluencerData = {
   name: "Virat Kohli",
   username: "virat.kohli",
@@ -70,10 +69,42 @@ const sampleData: InfluencerData = {
   },
 }
 
-const DataContext = createContext<InfluencerData | null>(null)
+interface DataContextType {
+  data: InfluencerData | null
+  isLoading: boolean
+  error: string | null
+  searchInfluencer: (username: string) => Promise<void>
+}
 
-export function DataProvider({ children, data }: { children: ReactNode; data?: InfluencerData }) {
-  return <DataContext.Provider value={data || sampleData}>{children}</DataContext.Provider>
+const DataContext = createContext<DataContextType | null>(null)
+
+export function DataProvider({ children }: { children: ReactNode }) {
+  const [data, setData] = useState<InfluencerData | null>(sampleData)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const searchInfluencer = async (username: string) => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch(`/api/influencer/${username}`)
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data for ${username}`)
+      }
+
+      const influencerData: InfluencerData = await response.json()
+      setData(influencerData)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred")
+      console.error("Error fetching influencer data:", err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return <DataContext.Provider value={{ data, isLoading, error, searchInfluencer }}>{children}</DataContext.Provider>
 }
 
 export function useInfluencerData() {
