@@ -18,7 +18,7 @@ export function PostEngagementChart() {
     postId: post.id,
     likes: post.likes,
     comments: post.comments,
-    engagement: post.likes + post.comments,
+    engagement: post.likes + post.comments!,
     caption: post.caption.slice(0, 50) + "...",
   }))
 
@@ -35,18 +35,18 @@ export function PostEngagementChart() {
           config={{
             likes: {
               label: "Likes",
-              color: "#06B6D4",
+              color: "hsl(var(--cyan-500, 186 100% 43%))",
             },
             comments: {
               label: "Comments",
-              color: "#F97316",
+              color: "hsl(var(--orange-400, 31 98% 53%))",
             },
           }}
           className="h-[400px]"
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.4} />
               <XAxis dataKey="post" stroke="hsl(var(--muted-foreground))" fontSize={12} />
               <YAxis
                 stroke="hsl(var(--muted-foreground))"
@@ -68,8 +68,8 @@ export function PostEngagementChart() {
                   return post ? `${label}: ${post.caption}` : label
                 }}
               />
-              <Bar dataKey="likes" fill="#06B6D4" name="Likes" radius={[2, 2, 0, 0]} />
-              <Bar dataKey="comments" fill="#F97316" name="Comments" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="likes" fill="hsl(var(--cyan-500, 186 100% 43%))" name="Likes" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="comments" fill="hsl(var(--orange-400, 31 98% 53%))" name="Comments" radius={[2, 2, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartContainer>

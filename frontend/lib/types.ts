@@ -16,7 +16,7 @@ export interface InfluencerData {
     thumbnail: string
     caption: string
     likes: number
-    comments: number
+    comments: number | null
   }>
   _meta: {
     source: string

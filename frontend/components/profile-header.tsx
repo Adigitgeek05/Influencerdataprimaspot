@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Instagram, ExternalLink, TrendingUp } from "lucide-react"
 import { useInfluencerData } from "@/lib/data-context"
+import { getProxiedImageUrl } from "@/lib/utils"
 
 export function ProfileHeader() {
   const { data } = useInfluencerData()
+  console.log(data);
 
   if (!data) {
     return null
@@ -32,7 +34,7 @@ export function ProfileHeader() {
           <div className="flex flex-col sm:flex-row gap-6 lg:gap-8">
             <div className="relative">
               <Avatar className="w-32 h-32 border-4 border-primary/20">
-                <AvatarImage src={data.profile_picture || "/placeholder.svg"} alt={data.name} />
+                <AvatarImage src={data.profile_picture ? getProxiedImageUrl(data.profile_picture) : "/placeholder.svg"} alt={data.name} />
                 <AvatarFallback className="text-2xl font-semibold bg-primary/10 text-primary">
                   {data.name
                     ? data.name
@@ -63,7 +65,7 @@ export function ProfileHeader() {
               </div>
 
               <div className="flex items-center gap-4">
-                <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+                <Button variant="outline" size="sm" className="gap-2 bg-transparent" onClick={()=> window.open(`https://instagram.com/${data.username}`, "_blank")}>
                   <ExternalLink className="w-4 h-4" />
                   View on Instagram
                 </Button>

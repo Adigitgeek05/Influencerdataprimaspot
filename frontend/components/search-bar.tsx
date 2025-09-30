@@ -1,8 +1,7 @@
+// components/SearchBar.tsx
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React, { useState } from "react"
 import { Search, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,12 +13,20 @@ interface SearchBarProps {
 
 export function SearchBar({ onSearch, isLoading = false }: SearchBarProps) {
   const [username, setUsername] = useState("")
+  const suggestions = ["virat.kohli", "cristiano", "selenagomez", "therock"]
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (username.trim()) {
-      await onSearch(username.trim())
+    const trimmed = username.trim()
+    if (trimmed) {
+      await onSearch(trimmed)
     }
+  }
+
+  // UX: clicking suggestion triggers search immediately
+  const handleSuggestionClick = async (s: string) => {
+    setUsername(s)
+    await onSearch(s)
   }
 
   return (
@@ -57,10 +64,11 @@ export function SearchBar({ onSearch, isLoading = false }: SearchBarProps) {
       {/* Search suggestions */}
       <div className="mt-3 flex flex-wrap gap-2">
         <span className="text-sm text-muted-foreground">Try:</span>
-        {["virat.kohli", "cristiano", "selenagomez", "therock"].map((suggestion) => (
+        {suggestions.map((suggestion) => (
           <button
             key={suggestion}
-            onClick={() => setUsername(suggestion)}
+            type="button"
+            onClick={() => handleSuggestionClick(suggestion)}
             className="text-xs px-2 py-1 bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground rounded-md transition-colors"
             disabled={isLoading}
           >

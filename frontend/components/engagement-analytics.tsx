@@ -109,19 +109,32 @@ export function EngagementAnalytics() {
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={postEngagementData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgb(var(--border))" />
-                <XAxis dataKey="name" stroke="rgb(var(--muted-foreground))" fontSize={12} />
-                <YAxis stroke="rgb(var(--muted-foreground))" fontSize={12} tickFormatter={formatNumber} />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.2} />
+                <XAxis 
+                  dataKey="name" 
+                  stroke="hsl(var(--muted-foreground))" 
+                  fontSize={12} 
+                  tick={{ fill: "hsl(var(--muted-foreground))" }}
+                />
+                <YAxis 
+                  stroke="hsl(var(--muted-foreground))" 
+                  fontSize={12} 
+                  tickFormatter={formatNumber}
+                  tick={{ fill: "hsl(var(--muted-foreground))" }}
+                />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "rgb(var(--card))",
-                    border: "1px solid rgb(var(--border))",
+                    backgroundColor: "hsl(var(--card))",
+                    border: "1px solid hsl(var(--border))",
                     borderRadius: "8px",
-                    color: "rgb(var(--foreground))",
+                    color: "hsl(var(--foreground))",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+                    padding: "8px 12px"
                   }}
                   formatter={(value: number) => formatNumber(value)}
                 />
-                <Bar dataKey="likes" fill="rgb(var(--chart-1))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="likes" fill="hsl(var(--cyan-500))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="comments" fill="hsl(var(--orange-400))" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

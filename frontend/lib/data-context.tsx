@@ -4,27 +4,25 @@ import { createContext, useContext, useState, type ReactNode } from "react"
 import type { InfluencerData } from "./types"
 
 const sampleData: InfluencerData = {
-  name: "Virat Kohli",
-  username: "virat.kohli",
-  profile_picture:
-    "https://scontent-sin11-2.cdninstagram.com/v/t51.2885-19/331017149_3373809859551320_1963035851400324431_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-sin11-2.cdninstagram.com&_nc_cat=108&_nc_oc=Q6cZ2QFvhIfQlGZizWyc8NEHOLNPYrzBOgl6mJIxyCStGDAd8Z-SMWT_J4gWgA2S7_lRXQc&_nc_ohc=Vm_SzXK3P3kQ7kNvwGXsy2T&_nc_gid=5QQUPHW7hFZF4FH8fAJsuA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfbM9EA0qoeGWrHPgQn6bOmsRncpmfS_w_cqP83zsKD32A&oe=68E09116&_nc_sid=8b3546",
-  followers: 273603911,
-  following: 284,
-  posts_count: 1038,
+  name: "I&E Cell- Army Institute of Technology, Pune",
+  username: "ecell_ait",
+  profile_picture: "https://scontent-bom2-3.cdninstagram.com/v/t51.2885-19/441022274_1162917298219728_450012401239353537_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=scontent-bom2-3.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QFaGy-J9_U0v01ltKNmMiRoZwgU_AFlLXOEWNsz0MkD8IAs4CUXh8DJTyaO3dje1cM&_nc_ohc=8uKLp48-tMwQ7kNvwGRZ5Nt&_nc_gid=qgtB7LoTmFaI-yV6ZZMphA&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfZJQ9YEaUDgbKVQ5xm9B1FopWauDwY-EMOWlRGbFvljTg&oe=68E1BFBA&_nc_sid=8b3546",
+  followers: 1524,
+  following: 81,
+  posts_count: 267,
   analytics: {
-    sample_size: 5,
-    avg_likes: 6785779,
-    avg_comments: 135003,
-    engagement_rate_pct: 2.53,
+    sample_size: 10,
+    avg_likes: 66,
+    avg_comments: 5,
+    engagement_rate_pct: 4.66
   },
   recent_posts: [
     {
-      id: "DPG-14viCQR",
-      thumbnail:
-        "https://scontent-sin2-2.cdninstagram.com/v/t51.82787-15/554800141_18532254064064508_6940929483385591374_n.jpg?stp=c288.0.864.864a_dst-jpg_e35_s640x640_tt6&_nc_cat=1&ccb=1-7&_nc_sid=18de74&_nc_ohc=gb8FLWAyWfMQ7kNvwGUy9Tq&_nc_oc=Adk8ki9OKW8L4qe8zHmJl7OB1cNdd5Fg-78Bho6IzoWBPxDCz2RwmHFlHO9L5_B9Df0&_nc_zt=23&_nc_ht=scontent-sin2-2.cdninstagram.com&_nc_gid=IYpn9ss5pWpyM_vgdTwgIQ&oh=00_AfbUIGHubV2E1NARUrvRtFO94AsW8Y-ZPe7HwGdawfHHuA&oe=68E08E9F",
-      caption: "Been a minute ✋",
-      likes: 14095897,
-      comments: 341228,
+      id: "DOiKjs6CCNC",
+      thumbnail: "https://scontent-bom2-1.cdninstagram.com/v/t51.82787-15/546658285_18112059544532898_2008521683625707351_n.heic?stp=c288.0.864.864a_dst-jpg_e35_s640x640_tt6&_nc_cat=105&ccb=1-7&_nc_sid=18de74&_nc_ohc=zuP-BabXDPQQ7kNvwHuX8p2&_nc_oc=AdlSTe0uKUgaDSTXEl7DDmF0Py7LsswUsN-zH7j44wmjRYOnhgldTHhpB9Y6gNxOOT8&_nc_zt=23&_nc_ht=scontent-bom2-1.cdninstagram.com&_nc_gid=lC8CvP3YiGdogw6fz5Rn9w&oh=00_AfafGyqhbjZldqpRgCkB9pQwCkYRkPz9SnjAHY-yAZZznQ&oe=68E1C0C9",
+      caption: "🚀 We're excited to reveal the teams advancing to Round 2: CEO in Trouble at Unnati 5.0! \n\nHuge cheers to those who wowed us in the Brand Battle with your energy, creativity, and confidence. 👏\n\nTo those not moving ahead—this isn't the end, just another step in your journey. We loved having you with us and can't wait to see you shine in future events! ✨\n\nRound 2 problem statements will hit your inbox soon—get ready to bring your best game. 💡🔥\n\nCreating Synergy\n~Team I&E Cell♥️",
+      likes: 41,
+      comments: 2,
     },
     {
       id: "DOnxrETjfPD",
@@ -88,7 +86,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setError(null)
 
     try {
-      const response = await fetch(`/api/influencer/${username}`)
+      const response = await fetch(`https://insta-scrapper-production.up.railway.app/api/profile/${username}?posts=10`
+        include:creddentials
+      )
 
       if (!response.ok) {
         throw new Error(`Failed to fetch data for ${username}`)

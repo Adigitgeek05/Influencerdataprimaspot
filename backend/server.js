@@ -1,5 +1,6 @@
 // server.js
 const express = require('express');
+const cors = require('cors');
 const { addExtra } = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const puppeteer = require('puppeteer-core');
@@ -9,10 +10,25 @@ const browserExtra = addExtra(puppeteer);
 browserExtra.use(StealthPlugin());
 
 const BRAVE_PATH = process.env.BRAVE_PATH || "C:/Program Files/Google/Chrome/Application/chrome.exe";
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const DEFAULT_SAMPLE_SIZE = 5;
 
+
 const app = express();
+
+// CORS whitelist for localhost:3000
+const whitelist = ['http://localhost:3000','https://frontend-sand-two-29.vercel.app/'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -151,7 +167,7 @@ async function scrapeProfile(username, sampleSize = DEFAULT_SAMPLE_SIZE, options
   });
 
   const profileUrl = `https://www.instagram.com/${encodeURIComponent(username)}/`;
-  await page.goto(profileUrl, { waitUntil: 'networkidle2', timeout: 60000 });
+  await page.goto(profileUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
   try {
     await page.waitForResponse(r => {
@@ -274,7 +290,7 @@ async function scrapeProfile(username, sampleSize = DEFAULT_SAMPLE_SIZE, options
       try {
         const url = `https://www.instagram.com/p/${sc}/`;
         console.log('[post navigate]', url);
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         const detail = await page.evaluate(() => {
           const result = { thumbnail: null, caption: null };
